@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">
+		<p:outputPanel>Escolha seus produtos</p:outputPanel>
+	</ui:define>
+	<ui:define name="conteudo">
+
+			<p:carousel value="#{lojaBean.produtos}" headerText="Produtos"
+				var="produto" itemStyle="text-align:center" responsive="true">
+				<h:form id="form#{produto.id}">
+					<p:panelGrid columns="2" style="width:100%;margin:10px 0px"
+						columnClasses="label,value" layout="grid"
+						styleClass="ui-panelgrid-blank">
+						<f:facet name="header">
+							<p:lightBox styleClass="imagebox" id="lighbox1">
+								<h:outputLink value="resources/img/#{produto.imagem}.png"
+									title="#{produto.imagem.toUpperCase()}">
+									<h:graphicImage name="img/#{produto.imagem}_small.png"
+										id="nature1" style="height: 77px; width: 100px" />
+								</h:outputLink>
+							</p:lightBox>
+						</f:facet>
+
+						<h:outputText value="Descrição" />
+						<h:outputText value="#{produto.nome}" />
+
+						<h:outputText value="Preço" />
+						<h:outputText value="#{produto.valor}">
+							<f:convertNumber type="currency" pattern="R$ #0.00"
+								currencySymbol="R$" locale="pt_BR" />
+						</h:outputText>
+
+						<h:outputText value="Qtd" />
+						<p:selectOneMenu id="quantidade"
+							value="${lojaBean.quantidadeSelecionada}">
+							<f:selectItems value="#{lojaBean.getQuantidadeOpt()}" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Adicionar ao Carrinho" />
+						<p:commandButton update="@form" icon="fa fa-fw fa-shopping-cart"
+							action="#{lojaBean.adicionarAoCarrinho()}" value="Adicionar"
+							title="Adicionar">
+							<f:param name="idProduto" value="#{produto.id}" />
+						</p:commandButton>
+					</p:panelGrid>
+
+				</h:form>
+				<f:facet name="footer">
+                #{fn:length(lojaBean.produtos)} produtos listados
+       			 </f:facet>
+			</p:carousel>
+
+	</ui:define>
+	<ui:define name="rodape">
+	</ui:define>
+</ui:composition>
+</html>
