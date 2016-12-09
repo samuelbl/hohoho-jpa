@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.OneToOne;
 import static javax.persistence.FetchType.EAGER;
@@ -21,7 +22,10 @@ public class CarrinhoCompra extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private ArrayList <ItemComercial> itens = new ArrayList<>();
+	
+	@OneToMany
+	private List <ItemComercial> itens;
+	
 	private BigDecimal total;
 	
 	@OneToOne(fetch = EAGER)
@@ -39,6 +43,7 @@ public class CarrinhoCompra extends BaseEntity {
 
 	public CarrinhoCompra(BigDecimal total) {
 		this.total = total;
+		itens = new ArrayList<>();
 	}
 	
 	public CarrinhoCompra() {

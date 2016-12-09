@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.hohoho.modelo.ItemComercial;
-import br.com.hohoho.modelo.Produto;
 
 public class ItemComercialDAO extends DAO<ItemComercial> {
 
@@ -31,8 +30,7 @@ public class ItemComercialDAO extends DAO<ItemComercial> {
 
 	@Override
 	public ItemComercial adiciona(ItemComercial t) {
-		Produto produto = ProdutoDAO.getInstance().buscaPorId(Long.parseLong(t.getIdProduto()));
-		BigDecimal total = (produto.getValor().multiply(new BigDecimal(t.getQuantidade())));
+		BigDecimal total = (t.getProduto().getValor().multiply(new BigDecimal(t.getQuantidade())));
 		t.setTotal(total);
 		return super.adiciona(t);
 	}
@@ -41,7 +39,7 @@ public class ItemComercialDAO extends DAO<ItemComercial> {
 		List<ItemComercial> listaItemComercial = ItemComercialDAO.getInstance().listaTodos();
 		List<ItemComercial> listaItemComercialRetorno = new ArrayList<>();
 		for (ItemComercial itemComercial : listaItemComercial) {
-			if (itemComercial.getIdProduto().equals(idProduto)) {
+			if (itemComercial.getProduto().getId().equals(Long.valueOf(idProduto))) {
 				listaItemComercialRetorno.add(itemComercial);
 			}			
 		}
