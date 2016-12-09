@@ -25,7 +25,7 @@ public class UsuariosBean implements Serializable{
 		return usuario;
 	}
 	
-	public String cadastrarUsuario(){
+	public String cadastrarUsuario() throws Exception{
 		String retorno = "";
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (UsuarioDAO.getInstance().existeRetornaId(usuario) != null){

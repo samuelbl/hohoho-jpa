@@ -20,7 +20,6 @@ public class CarrinhoDAO extends DAO<CarrinhoCompra> {
 	
 	private CarrinhoDAO() {
 		super(CarrinhoCompra.class);
-		geraDados();
 	}
 	
 	public void atualizaCarrinhoEtotal(CarrinhoCompra carrinho) {
@@ -60,10 +59,7 @@ public class CarrinhoDAO extends DAO<CarrinhoCompra> {
 		super.atualiza(carrinho);
 	}		
 			
-	@Override
-	void geraDados() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
-}
+

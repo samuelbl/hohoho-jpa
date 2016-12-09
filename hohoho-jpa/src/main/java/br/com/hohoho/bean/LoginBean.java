@@ -24,7 +24,7 @@ public class LoginBean implements Serializable{
 		return "login?faces-redirect=true";
 	}
 
-	public String efetuaLogin() {
+	public String efetuaLogin() throws Exception {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Long existe = UsuarioDAO.getInstance().existeRetornaId(this.usuario);
 		if (existe!= null) {

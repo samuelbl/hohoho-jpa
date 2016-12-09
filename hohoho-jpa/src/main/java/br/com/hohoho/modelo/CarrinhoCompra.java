@@ -23,7 +23,7 @@ public class CarrinhoCompra extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@OneToMany
+	@OneToMany(fetch = EAGER)
 	private List <ItemComercial> itens;
 	
 	private BigDecimal total;

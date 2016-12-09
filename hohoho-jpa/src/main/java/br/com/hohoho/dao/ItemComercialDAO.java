@@ -19,17 +19,12 @@ public class ItemComercialDAO extends DAO<ItemComercial> {
 
 	private ItemComercialDAO() {
 		super(ItemComercial.class);
-		geraDados();
 	}
 
-	@Override
-	void geraDados() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
-	public ItemComercial adiciona(ItemComercial t) {
+	public ItemComercial adiciona(ItemComercial t) throws Exception {
 		BigDecimal total = (t.getProduto().getValor().multiply(new BigDecimal(t.getQuantidade())));
 		t.setTotal(total);
 		return super.adiciona(t);

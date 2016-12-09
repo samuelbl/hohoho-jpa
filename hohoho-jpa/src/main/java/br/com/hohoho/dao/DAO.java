@@ -1,61 +1,78 @@
 package br.com.hohoho.dao;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
 
 import br.com.hohoho.modelo.BaseEntity;
+import br.com.hohoho.util.JPAUtil;
+
 
 public abstract class DAO<T extends BaseEntity> {
-	protected final Map<Long, T> LISTA;
-
-	public DAO(Class<T> classe) {
-		this.LISTA = new HashMap<>();
+	private final Class<T> classe;
+	public DAO(Class<T> classe) {		
+		this.classe = classe;
 	}
 
-	public T adiciona(T t) {
-		geraIdEAdiciona(t);
+	public T adiciona(T t) throws Exception {
+		EntityManager manager = new JPAUtil().getEntityManager();
+		manager.getTransaction().begin();
+		if(t.getId() == null){
+			manager.persist(t);	
+		}
+		else{
+			if(!manager.contains(t)){
+				throw new Exception("Erro ao atualizar o evento");
+			}
+			manager.merge(t);
+		}
+		manager.getTransaction().commit();
+		manager.close();
 		return t;
+	}
+	
+	
+	public List<T> listaTodos() {
+		EntityManager manager = new JPAUtil().getEntityManager();
+		 CriteriaQuery<T> query = manager.getCriteriaBuilder().createQuery(classe);
+	        query.select(query.from(classe));
+	        List<T> lista = manager.createQuery(query).getResultList();
+	        return lista;
 	}
 
 	public void atualiza(T t) {
-		LISTA.put(t.getId(), t);
+		EntityManager manager = new JPAUtil().getEntityManager();
+		manager.getTransaction().begin();
+		manager.merge(t);
+		manager.getTransaction().commit();
+		manager.close();
 	}
 
 	public T buscaPorId(Long id) {
-		return LISTA.get(id);
+		EntityManager manager = new JPAUtil().getEntityManager();
+		manager.getTransaction().begin();
+		T objId = null;
+		objId = manager.find(classe, id);		
+		return objId;
 	}
-
-	public int contaTodos() {
-		return LISTA.size();
-	}
-
-	abstract void geraDados();
-
-	protected void geraIdEAdiciona(T t) {
-		long id = LISTA.size();
-		t.setId(id);
-		LISTA.put(id, t);
-	}
-
-	public List<T> listaTodos() {
-		return new ArrayList<T>(LISTA.values());
-	}
-
-	public List<T> listaTodosPaginada(int firstResult, int maxResults) {
-		List<T> lista = new ArrayList<>();
-		for (int i = firstResult + 1; i < firstResult + 1 + maxResults; i++) {
-			lista.add(LISTA.get(i));
-		}
-		return lista;
-	}
+	
+	
 
 	public void remove(Long id) {
-		LISTA.remove(id);
+		EntityManager manager = new JPAUtil().getEntityManager();
+		T t = manager.find(classe, id);
+		manager.getTransaction().begin();
+		manager.remove(t);
+		manager.getTransaction().commit();
+		manager.close();
 	}
 
 	public void remove(T t) {
-		remove(t.getId());
+		EntityManager manager = new JPAUtil().getEntityManager();
+		manager.getTransaction().begin();
+		manager.remove(t);
+		manager.getTransaction().commit();
+		manager.close();
 	}
 }

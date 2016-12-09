@@ -47,7 +47,7 @@ public class LojaBean implements Serializable {
 		this.quantidadeSelecionada = quantidadeSelecionada;
 	}
 	
-	public String adicionarAoCarrinho() {
+	public String adicionarAoCarrinho() throws Exception {
 		FacesContext context = FacesContext.getCurrentInstance();
 		
 		String idProduto = (String)context.getExternalContext().getRequestParameterMap().get("idProduto");
