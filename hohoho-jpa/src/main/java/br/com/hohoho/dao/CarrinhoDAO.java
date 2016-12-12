@@ -33,11 +33,13 @@ public class CarrinhoDAO extends DAO<CarrinhoCompra> {
 	
 	public void removeDoCarrinho(ItemComercial item, CarrinhoCompra carrinho){
 		BigDecimal total = carrinho.getTotal();	
+		ItemComercial itemAtac = ItemComercialDAO.getInstance().buscaPorId(item.getId());
 		for (int i =0; i< carrinho.getItens().size();i++){
 			ItemComercial itemCarrinho = carrinho.getItens().get(i);
-			if(itemCarrinho.getId().equals(item.getId())){
+			if(itemCarrinho.getId().equals(itemAtac.getId())){
 				total = total.subtract(itemCarrinho.getTotal());
-				carrinho.getItens().remove(itemCarrinho);
+				carrinho.getItens().remove(itemAtac);
+				ItemComercialDAO.getInstance().remove(itemAtac);
 				carrinho.setTotal(total);
 			}
 		}
@@ -53,6 +55,7 @@ public class CarrinhoDAO extends DAO<CarrinhoCompra> {
 				BigDecimal vlrProdutoUnitario = itemCarrinho.getProduto().getValor();
 				total = total.subtract((vlrProdutoUnitario.multiply(BigDecimal.valueOf(itemCarrinho.getQuantidadeSelecionadaRemocao()))));
 				itemCarrinho.setTotal(vlrProdutoUnitario.multiply(BigDecimal.valueOf(itemCarrinho.getQuantidade())));
+				ItemComercialDAO.getInstance().atualiza(itemCarrinho);
 				carrinho.setTotal(total);
 			}
 		}

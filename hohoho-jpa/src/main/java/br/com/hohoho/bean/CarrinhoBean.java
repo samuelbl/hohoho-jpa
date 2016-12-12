@@ -25,7 +25,7 @@ public class CarrinhoBean {
 	
 	public void removerDoCarrinho(ItemComercial itemRemocao) {
 		if(itemRemocao.getQuantidadeSelecionadaRemocao() == itemRemocao.getQuantidade()){
-			CarrinhoDAO.getInstance().removeDoCarrinho(itemRemocao, this.carrinho);
+			CarrinhoDAO.getInstance().removeDoCarrinho(itemRemocao, this.carrinho);			
 		}
 		else{		
 			CarrinhoDAO.getInstance().removeQuantidadeDoCarrinho(itemRemocao, this.carrinho);

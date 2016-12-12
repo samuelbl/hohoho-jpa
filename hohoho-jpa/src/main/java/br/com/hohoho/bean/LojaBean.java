@@ -60,6 +60,7 @@ public class LojaBean implements Serializable {
 			if (itemComercial.getProduto().getId().equals(item.getProduto().getId())){
 				itemComercial.setQuantidade(itemComercial.getQuantidade()+item.getQuantidade());
 				itemComercial.setTotal(itemComercial.getTotal().add(item.getTotal()));
+				ItemComercialDAO.getInstance().atualiza(itemComercial);
 				controle = true;
 			}
 		}
