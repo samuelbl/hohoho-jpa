@@ -1,6 +1,7 @@
 package br.com.hohoho.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,8 @@ public class LojaBean implements Serializable {
 		String idProduto = (String)context.getExternalContext().getRequestParameterMap().get("idProduto");
 		Produto produto = ProdutoDAO.getInstance().buscaPorId(Long.valueOf(idProduto));
 		ItemComercial item = new ItemComercial(produto, this.getQuantidadeSelecionada());
-		item = ItemComercialDAO.getInstance().adiciona(item);
+		BigDecimal total = (item.getProduto().getValor().multiply(new BigDecimal(item.getQuantidade())));
+		item.setTotal(total);
 		CarrinhoCompra carrinho = (CarrinhoCompra) context.getExternalContext().getSessionMap().get("carrinhoCompra");
 		boolean controle = false;
 		for (ItemComercial itemComercial : carrinho.getItens()) {
@@ -66,6 +68,7 @@ public class LojaBean implements Serializable {
 		}
 		if(!controle){
 			carrinho.setItens(item);
+			item = ItemComercialDAO.getInstance().adiciona(item);
 		}
 		CarrinhoDAO.getInstance().atualizaCarrinhoEtotal(carrinho);
 		return "carrinho?faces-redirect=true";

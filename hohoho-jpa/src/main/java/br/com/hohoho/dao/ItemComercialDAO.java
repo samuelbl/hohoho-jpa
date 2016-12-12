@@ -25,10 +25,9 @@ public class ItemComercialDAO extends DAO<ItemComercial> {
 
 	@Override
 	public ItemComercial adiciona(ItemComercial t) throws Exception {
-		BigDecimal total = (t.getProduto().getValor().multiply(new BigDecimal(t.getQuantidade())));
-		t.setTotal(total);
 		return super.adiciona(t);
 	}
+	
 
 	public List<ItemComercial> retornarListaIdProduto(String idProduto) {
 		List<ItemComercial> listaItemComercial = ItemComercialDAO.getInstance().listaTodos();

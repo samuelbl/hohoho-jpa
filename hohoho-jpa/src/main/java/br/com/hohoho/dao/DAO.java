@@ -61,8 +61,8 @@ public abstract class DAO<T extends BaseEntity> {
 
 	public void remove(Long id) {
 		EntityManager manager = new JPAUtil().getEntityManager();
-		T t = manager.find(classe, id);
 		manager.getTransaction().begin();
+		T t = manager.find(classe, id);
 		manager.remove(t);
 		manager.getTransaction().commit();
 		manager.close();
@@ -71,7 +71,7 @@ public abstract class DAO<T extends BaseEntity> {
 	public void remove(T t) {
 		EntityManager manager = new JPAUtil().getEntityManager();
 		manager.getTransaction().begin();
-		manager.remove(t);
+		manager.remove(manager.contains(t) ? t : manager.merge(t));
 		manager.getTransaction().commit();
 		manager.close();
 	}
